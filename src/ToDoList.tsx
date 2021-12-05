@@ -41,7 +41,7 @@ const ToDoList = () => {
     register,
     handleSubmit,
     formState: { errors },
-    setError
+    watch
   } = useForm<IFormData>({
     defaultValues: {
       email: "@naver.com",
@@ -50,16 +50,7 @@ const ToDoList = () => {
   });
 
   const onValid = (data: IFormData) => {
-    if(data.password !== data.verifyPassword)
-    {
-      setError("verifyPassword", 
-        { message: "Password is not match" },
-        { shouldFocus: true }
-      );
-    }
-    setError("serverError", {
-      message: "server has something error"
-    })
+    console.log("전부통과!");
   }
 
   return (
@@ -110,6 +101,9 @@ const ToDoList = () => {
           {...register("verifyPassword", {
             required: true,
             minLength: 5,
+            validate: {
+              notMatchPw: (value) => watch("password") != value ? "Not match password" : true
+            }
           })}
           placeholder={"Verify Password"}
         />
